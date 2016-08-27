@@ -1,106 +1,56 @@
 package com.milleniuminfinity.app.services.internet.Impl;
 
 
+import com.milleniuminfinity.app.domain.internet.Internet;
+import com.milleniuminfinity.app.repository.internet.InternetRepository;
 import com.milleniuminfinity.app.services.internet.InternetService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Chad on 5/8/2016.
  */
-public class InternetServiceImpl extends IntentService implements InternetService {
+@Service
+public class InternetServiceImpl implements InternetService {
 
-    private static final String ACTION_ADD = "com.milleniuminfinity.app.milleniuminfintity.services.internet.Impl.action.ADD";
-    private static final String ACTION_UPDATE = "com.milleniuminfinity.app.milleniuminfintity.services.internet.Impl.action.UPDATE";
-
-    private static final String EXTRA_ADD = "com.milleniuminfinity.app.milleniuminfintity.services.internet.Impl.action.ADD";
-    private static final String EXTRA_UPDATE = "com.milleniuminfinity.app.milleniuminfintity.services.internet.Impl.action.UPDATE";
-
-    private static final String TAG = "AddInternetService";
-    private static InternetServiceImpl service = null;
-
-    private InternetServiceImpl()
-    {
-        super("InternetServiceImpl");
-    }
-
-    public static InternetServiceImpl getInstance()
-    {
-        if(service == null)
-            service = new InternetServiceImpl();
-
-        return service;
-    }
-
-
+    @Autowired
+    InternetRepository internetRepository;
 
     @Override
-    public void addInternet(Context context, Internet internet)
+    public Internet create(Internet internet)
     {
-        Intent intent = new Intent(context, InternetServiceImpl.class);
-        intent.setAction(ACTION_ADD);
-        //intent.putExtra(EXTRA_ADD, internet);
-        context.startService(intent);
+        return internetRepository.save(internet);
     }
 
     @Override
-    public void updateInternet(Context context, Internet internet)
+    public Internet readById(String ipAddress)
     {
-        Intent intent = new Intent(context, InternetServiceImpl.class);
-        intent.setAction(ACTION_UPDATE);
-        //intent.putExtra(EXTRA_UPDATE, internet);
-        context.startService(intent);
+        return internetRepository.findOne(ipAddress);
     }
 
     @Override
-    protected void onHandleIntent(Intent intent)
+    public Set<Internet> readAll()
     {
-        if(intent != null) {
-            final String action = intent.getAction();
-
-            if (ACTION_ADD.equals(action)) {
-                final Internet internet = (Internet) intent.getSerializableExtra(EXTRA_ADD);
-                internetPost(internet);
-            } else if (ACTION_UPDATE.equals(action)) {
-                final Internet internet = (Internet) intent.getSerializableExtra(EXTRA_UPDATE);
-                internetUpdate(internet);
-            }
+        Set<Internet> result = new HashSet<>();
+        while(internetRepository.findAll().iterator().hasNext())
+        {
+            result.add(internetRepository.findAll().iterator().next());
         }
+        return result;
     }
 
-    private void internetUpdate(Internet internet)
+    @Override
+    public Internet update(Internet internet)
     {
-        //Post and Save local
-        try
-        {
-            InternetRepository internetRepository = new InternetRepositoryImpl(getBaseContext());
-            internetRepository.update(internet);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+        return internetRepository.save(internet);
     }
 
-    private void internetPost(Internet internet)
+    @Override
+    public void delete(Internet internet)
     {
-        //Post and Save local
-        try
-        {
-            InternetRepository internetRepository = new InternetRepositoryImpl(getBaseContext());
-            internetRepository.save(internet);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    private void deleteAll()
-    {
-        InternetRepository internetRepository = new InternetRepositoryImpl(getBaseContext());
-        try {
-            internetRepository.deleteAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        internetRepository.delete(internet);
     }
 }

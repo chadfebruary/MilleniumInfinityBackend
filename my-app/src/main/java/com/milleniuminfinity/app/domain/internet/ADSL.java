@@ -14,28 +14,11 @@ import java.io.Serializable;
 @javax.persistence.Entity
 public class ADSL implements Serializable, Internet
 {
-    /*@Override
-    public String handleRequest(int request)
-    {
-        if(request == 1)
-        {
-            return "ADSL";
-        }
-        else 
-        {
-            if(nextConnectionType != null)
-            {
-                return nextConnectionType.handleRequest(request);
-                
-            }
-            
-            return "Invalid option";
-        }
-    }*/
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String ipAddress, ISP, planName;
     String price, dataAllowance;
+    String type = "ADSL";
     private Internet nextInternetType;
 
     private ADSL(){}
@@ -45,6 +28,7 @@ public class ADSL implements Serializable, Internet
         this.ipAddress = builder.ipAddress;
         this.ISP = builder.ISP;
         this.planName = builder.planName;
+        this.type = builder.type;
         this.price = builder.price;
         this.dataAllowance = builder.dataAllowance;
     }
@@ -80,15 +64,13 @@ public class ADSL implements Serializable, Internet
     }
 
     @Override
-    public void setNextInternetType(Internet nextInternetType)
-    {
-        this.nextInternetType = nextInternetType;
-    }
+    public String getType(){return type;}
+
 
     public static class Builder
     {
         private String ipAddress, ISP, planName;
-        String price, dataAllowance;
+        String price, dataAllowance, type;
 
         public Builder ipAddress(String value)
         {
@@ -120,10 +102,17 @@ public class ADSL implements Serializable, Internet
             return this;
         }
 
+        public Builder type(String value)
+        {
+            this.type = value;
+            return this;
+        }
+
         public Builder copy(ADSL value)
         {
             this.ipAddress = value.ipAddress;
             this.ISP = value.ISP;
+            this.type = value.type;
             this.planName = value.planName;
             this.price = value.price;
             this.dataAllowance = value.dataAllowance;

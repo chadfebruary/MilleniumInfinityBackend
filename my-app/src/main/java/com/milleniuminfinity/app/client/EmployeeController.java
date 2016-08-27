@@ -10,10 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Set;
@@ -21,7 +18,10 @@ import java.util.Set;
 /**
  * Created by cfebruary on 2016/08/18.
  */
+@RestController
 public class EmployeeController {
+
+    //Inject service
     @Autowired
     private EmployeeService employeeService;
 
@@ -111,6 +111,7 @@ public class EmployeeController {
         return new ResponseEntity<Employee>(updatedEmployee, HttpStatus.OK);
     }
 
+    //Delete an employee
     @RequestMapping(value = "/employee/{employeeID}", method = RequestMethod.DELETE)
     public ResponseEntity<Employee> deleteEmployee(@PathVariable("employeeID") String employeeID)
     {

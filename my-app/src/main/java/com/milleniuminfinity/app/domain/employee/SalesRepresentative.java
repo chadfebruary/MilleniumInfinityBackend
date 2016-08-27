@@ -25,6 +25,7 @@ public class SalesRepresentative implements Serializable, Employee{
         this.surname = builder.surname;
         this.dateOfBirth = builder.dateOfBirth;
         this.employeeID = builder.employeeID;
+        this.role = builder.role;
     }
 
     @Override
@@ -99,6 +100,7 @@ public class SalesRepresentative implements Serializable, Employee{
             this.surname = value.getSurname();
             this.dateOfBirth = value.getDateOfBirth();
             this.employeeID = value.getEmployeeID();
+            this.role = value.getEmployeeRole();
 
             return this;
         }

@@ -100,6 +100,7 @@ public class Manager implements Serializable, Employee {
             this.surname = value.getSurname();
             this.dateOfBirth = value.getDateOfBirth();
             this.employeeID = value.getEmployeeID();
+            this.role = value.getEmployeeRole();
 
             return this;
         }
