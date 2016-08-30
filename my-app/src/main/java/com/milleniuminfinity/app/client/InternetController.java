@@ -1,6 +1,5 @@
 package com.milleniuminfinity.app.client;
 
-import com.milleniuminfinity.app.domain.employee.Employee;
 import com.milleniuminfinity.app.domain.internet.ADSL;
 import com.milleniuminfinity.app.domain.internet.Fibre;
 import com.milleniuminfinity.app.domain.internet.Internet;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Set;
 
 /**
