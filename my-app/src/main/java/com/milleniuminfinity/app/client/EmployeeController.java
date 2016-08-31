@@ -25,6 +25,11 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @RequestMapping("/hello")
+    public String getValue(){
+        return "Hello world";
+    }
+
     //Create an employee
     @RequestMapping(value = "/employee/", method = RequestMethod.POST)
     public ResponseEntity<Void> createEmployee(@RequestBody Employee employee, UriComponentsBuilder ucBuilder){
