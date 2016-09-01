@@ -1,9 +1,6 @@
 package com.milleniuminfinity.app.client;
 
-import com.milleniuminfinity.app.domain.internet.ADSL;
-import com.milleniuminfinity.app.domain.internet.Fibre;
 import com.milleniuminfinity.app.domain.internet.Internet;
-import com.milleniuminfinity.app.domain.internet.Mobile;
 import com.milleniuminfinity.app.services.internet.InternetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -68,60 +65,20 @@ public class InternetController {
     @RequestMapping(value = "/internet/{ipAddress}", method = RequestMethod.PUT)
     public ResponseEntity<Internet> updateInternet(@PathVariable("ipAddress") String ipAddress, @RequestBody Internet internet)
     {
-        Internet currentInternet = null;
+        Internet currentInternet = internetService.readById(ipAddress);
 
-        if(currentInternet != null)
-        {
-            if(internet.getType().equalsIgnoreCase("ADSL")){
-                currentInternet = (ADSL)internetService.readById(ipAddress);
-            }
-            else if(internet.getType().equalsIgnoreCase("Fibre")){
-                currentInternet = (Fibre)internetService.readById(ipAddress);
-            }
-            else{
-                currentInternet = (Mobile)internetService.readById(ipAddress);
-            }
-        }
-        else if(currentInternet == null)
-        {
+        if(currentInternet == null) {
             return new ResponseEntity<Internet>(HttpStatus.NOT_FOUND);
         }
 
-        Internet updatedInternet = null;
+        Internet updatedInternet = new Internet.Builder().copy(currentInternet)
+                .planName(internet.getPlanName())
+                .ISP(internet.getISP())
+                .price(internet.getPrice())
+                .dataAllowance(internet.getDataAllowance())
+                .type(internet.getType())
+                .build();
 
-        if(internet.getType().equalsIgnoreCase("ADSL"))
-        {
-            updatedInternet = new ADSL.Builder().copy((ADSL)currentInternet)
-                    .ipAddress(internet.getIPAddress())
-                    .ISP(internet.getISP())
-                    .planName(internet.getPlanName())
-                    .type(internet.getType())
-                    .price(internet.getPrice())
-                    .dataAllowance(internet.getDataAllowance())
-                    .build();
-        }
-        else if(internet.getType().equalsIgnoreCase("Fibre"))
-        {
-            updatedInternet = new Fibre.Builder().copy((Fibre)currentInternet)
-                    .ipAddress(internet.getIPAddress())
-                    .ISP(internet.getISP())
-                    .planName(internet.getPlanName())
-                    .type(internet.getType())
-                    .price(internet.getPrice())
-                    .dataAllowance(internet.getDataAllowance())
-                    .build();
-        }
-        else
-        {
-            updatedInternet = new Mobile.Builder().copy((Mobile)currentInternet)
-                    .ipAddress(internet.getIPAddress())
-                    .ISP(internet.getISP())
-                    .planName(internet.getPlanName())
-                    .type(internet.getType())
-                    .price(internet.getPrice())
-                    .dataAllowance(internet.getDataAllowance())
-                    .build();
-        }
         internetService.update(updatedInternet);
         return new ResponseEntity<Internet>(updatedInternet, HttpStatus.OK);
     }

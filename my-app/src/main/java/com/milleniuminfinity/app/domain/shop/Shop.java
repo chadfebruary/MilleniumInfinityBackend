@@ -3,15 +3,19 @@ package com.milleniuminfinity.app.domain.shop;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Created by Admin on 2016/04/15.
  */
 @javax.persistence.Entity
-public class Shop {
+public class Shop implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String shopNumber, shopName, shopOwner, shopPhoneNumber;
+    private String shopNumber;
+    private String shopName;
+    private String shopOwner;
+    private String shopPhoneNumber;
 
     private Shop(){}
 
@@ -82,7 +86,7 @@ public class Shop {
         {
             return new Shop(this);
         }
-        
+
         public static Builder builder()
         {
             return new Builder();

@@ -1,9 +1,6 @@
 package com.milleniuminfinity.app.client;
 
-import com.milleniuminfinity.app.domain.employee.Cleaner;
 import com.milleniuminfinity.app.domain.employee.Employee;
-import com.milleniuminfinity.app.domain.employee.Manager;
-import com.milleniuminfinity.app.domain.employee.SalesRepresentative;
 import com.milleniuminfinity.app.services.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,11 +21,6 @@ public class EmployeeController {
     //Inject service
     @Autowired
     private EmployeeService employeeService;
-
-    @RequestMapping("/hello")
-    public String getValue(){
-        return "Hello world";
-    }
 
     //Create an employee
     @RequestMapping(value = "/employee/", method = RequestMethod.POST)
@@ -67,51 +59,19 @@ public class EmployeeController {
     @RequestMapping(value = "/employee/{employeeID}", method = RequestMethod.PUT)
     public ResponseEntity<Employee> updateEmployee(@PathVariable("employeeID") String employeeID, @RequestBody Employee employee)
     {
-        Employee currentEmployee = null;
+        Employee currentEmployee = employeeService.readById(employeeID);
 
-        if(currentEmployee != null) {
-
-            if (employee.getEmployeeRole().equalsIgnoreCase("Manager")) {
-                currentEmployee = (Manager) employeeService.readById(employeeID);
-            } else if (employee.getEmployeeRole().equalsIgnoreCase("Sales representative")) {
-                currentEmployee = (SalesRepresentative) employeeService.readById(employeeID);
-            } else {
-                currentEmployee = (Cleaner) employeeService.readById(employeeID);
-            }
-        }
-        else if(currentEmployee == null)
-        {
+        if(currentEmployee == null) {
             return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
         }
 
-        Employee updatedEmployee = null;
+        Employee updatedEmployee = new Employee.Builder().copy(currentEmployee)
+                .name(employee.getName())
+                .surname(employee.getSurname())
+                .dateOfBirth(employee.getDateOfBirth())
+                .role(employee.getEmployeeRole())
+                .build();
 
-        if(employee.getEmployeeRole().equalsIgnoreCase("Manager")) {
-             updatedEmployee = new Manager.Builder().copy((Manager)currentEmployee)
-                    .name(employee.getName())
-                    .surname(employee.getSurname())
-                    .dateOfBirth(employee.getDateOfBirth())
-                    .role(employee.getEmployeeRole())
-                    .build();
-        }
-        else if(employee.getEmployeeRole().equalsIgnoreCase("Sales representative"))
-        {
-             updatedEmployee = new SalesRepresentative.Builder().copy((SalesRepresentative)currentEmployee)
-                    .name(employee.getName())
-                    .surname(employee.getSurname())
-                    .dateOfBirth(employee.getDateOfBirth())
-                    .role(employee.getEmployeeRole())
-                    .build();
-        }
-        else
-        {
-             updatedEmployee = new Cleaner.Builder().copy((Cleaner) currentEmployee)
-                    .name(employee.getName())
-                    .surname(employee.getSurname())
-                    .dateOfBirth(employee.getDateOfBirth())
-                    .role(employee.getEmployeeRole())
-                    .build();
-        }
         employeeService.update(updatedEmployee);
         return new ResponseEntity<Employee>(updatedEmployee, HttpStatus.OK);
     }

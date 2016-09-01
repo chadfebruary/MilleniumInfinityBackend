@@ -1,7 +1,5 @@
 package com.milleniuminfinity.app.services.shop;
 
-
-import com.milleniuminfinity.app.domain.employee.Employee;
 import com.milleniuminfinity.app.domain.shop.Shop;
 import com.milleniuminfinity.app.services.Service;
 

@@ -6,7 +6,6 @@ import com.milleniuminfinity.app.services.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
