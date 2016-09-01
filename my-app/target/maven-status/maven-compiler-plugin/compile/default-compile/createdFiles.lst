@@ -1,9 +1,0 @@
-com\milleniuminfinity\app\factories\employee\EmployeeFactory.class
-com\milleniuminfinity\app\factories\internet\FibreFactory.class
-com\milleniuminfinity\app\factories\internet\InternetFactory.class
-com\milleniuminfinity\app\factories\employee\SalesRepresentativeFactory.class
-com\milleniuminfinity\app\factories\internet\ADSLFactory.class
-com\milleniuminfinity\app\factories\shop\ShopFactory.class
-com\milleniuminfinity\app\factories\employee\ManagerFactory.class
-com\milleniuminfinity\app\factories\internet\MobileFactory.class
-com\milleniuminfinity\app\factories\employee\CleanerFactory.class

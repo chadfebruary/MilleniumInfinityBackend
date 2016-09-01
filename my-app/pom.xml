@@ -83,7 +83,9 @@
   </dependencies>
 
   <build>
+
     <plugins>
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
@@ -91,6 +93,7 @@
           <executable>true</executable>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -101,7 +104,35 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>4.0</version>
+        <executions>
+          <execution>
+            <id>migrate-db</id>
+            <goals>
+              <goal>migrate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <url>jdbc:mysql://148.100.5.63/MilleniumInfinity</url>
+          <user>root</user>
+          <password></password>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.2</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
     </plugins>
+
   </build>
 
 </project>
